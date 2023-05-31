@@ -2,8 +2,13 @@
 import React from "react";
 import { DefaultButton } from "@fluentui/react";
 import Progress from "./Progress";
+import TemplateTreeView from "./TemplateTreeView";
+import { Typography } from "@mui/material";
+import {quoteVariables} from "./test";
 
 /* global Word, require */
+
+
 
 export interface AppProps {
   title: string;
@@ -49,10 +54,27 @@ const App: React.FC<AppProps> = (props) => {
 
   return (
     <div className="wrapper">
-      <h1 className="title">OPUSFLOW ROCKS</h1>
+      {/* <h1 className="title">OPUSFLOW ROCKS</h1>
       {dbfields.map((field) => {
         return <li className="item">{field}</li>;
-      })}
+      })} */}
+      <TemplateTreeView title={<Typography variant="body1" sx={{ mb: 1, color: "text.secondary" }}>{`Variables`}</Typography>}
+        sx={{ minWidth: 250 }}
+        onItemClick={(variable) => {
+          return Word.run(async (context) => {
+            const paragraph = context.document.body.insertParagraph(
+              variable,
+              Word.InsertLocation.end
+            );
+
+            paragraph.font.color = "blue";
+
+            await context.sync();
+          });
+        }}
+        nodes={quoteVariables}
+        format="docx"
+      />
       <DefaultButton className="messageBtn" onClick={click}>
         Click to read cool message from Alex
       </DefaultButton>
