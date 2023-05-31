@@ -26,12 +26,21 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@fluentui/react": "^8.52.3",
+    "@iconify/react": "^4.1.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/lab": "^5.0.0-alpha.132",
+    "@mui/material": "^5.13.3",
+    "@react-spring/web": "^9.7.2",
     "core-js": "^3.9.1",
     "es6-promise": "^4.2.8",
+    "next-i18next": "^13.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "regenerator-runtime": "^0.13.7"
+    "regenerator-runtime": "^0.13.7",
+    "simplebar-react": "^3.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
@@ -46,6 +55,7 @@
     "acorn": "^8.5.0",
     "babel-loader": "^8.2.2",
     "copy-webpack-plugin": "^9.0.1",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-office-addins": "^2.1.5",
     "eslint-plugin-react": "^7.28.0",
     "file-loader": "^6.2.0",
