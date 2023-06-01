@@ -2,6 +2,8 @@ import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { ThemeProvider } from "@fluentui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { ClerkProvider } from "@clerk/clerk-react";
+import AuthorizedApolloProvider from "./components/AuthorizedApolloProvider";
 
 /* global document, Office, module */
 
@@ -17,7 +19,24 @@ const render = (Component) => {
   ReactDOM.render(
     <React.Suspense fallback={<div>Loading...</div>}>
       <ThemeProvider>
-        <Component title={title} isOfficeInitialized={isOfficeInitialized} />
+        <ClerkProvider
+          polling
+          frontendApi=""
+          appearance={{
+            layout: {
+              socialButtonsVariant: "iconButton",
+              helpPageUrl: "https://opusflow.io",
+              privacyPageUrl: "https://opusflow.io",
+              termsPageUrl: "https://opusflow.io",
+              socialButtonsPlacement: "top",
+              showOptionalFields: true,
+            },
+          }}
+        >
+          <AuthorizedApolloProvider>
+            <Component title={title} isOfficeInitialized={isOfficeInitialized} />
+          </AuthorizedApolloProvider>
+        </ClerkProvider>
       </ThemeProvider>
     </React.Suspense>,
     document.getElementById("container")
