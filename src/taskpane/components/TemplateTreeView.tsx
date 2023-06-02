@@ -130,7 +130,7 @@ export default function TemplateTreeView({ title, nodes, onItemClick, sx, format
         {/* {!!showInfo && <TemplateLegendInfoComponent context="pdf" />} */}
       </Stack>
       <Divider />
-      <Scrollbar sx={{ overflowX: "hidden", m: 1, height: "69vh", ...sx }}>
+      <Scrollbar sx={{ overflowX: "hidden", m: 1, height: "fit-content", ...sx }}>
         <TreeView
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}

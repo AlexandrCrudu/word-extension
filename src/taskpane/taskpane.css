@@ -119,3 +119,7 @@ b {
 .wrapper {
   margin: 1rem;
 }
+
+.simplebar-placeholder {
+  display: none;
+}

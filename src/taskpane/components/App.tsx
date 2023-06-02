@@ -73,9 +73,9 @@ const App: React.FC<AppProps> = (props) => {
           nodes={quoteVariables}
           format="docx"
         />
-        <DefaultButton className="messageBtn" onClick={click}>
+        {/* <DefaultButton className="messageBtn" onClick={click}>
           Click to read cool message from Alex
-        </DefaultButton>
+        </DefaultButton> */}
       </div>
     </ThemeProvider>
   );
