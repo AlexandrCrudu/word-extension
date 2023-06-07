@@ -39,6 +39,7 @@
     "@mui/material": "^5.13.3",
     "@react-spring/web": "^9.7.2",
     "core-js": "^3.9.1",
+    "dotenv": "^16.1.4",
     "es6-promise": "^4.2.8",
     "graphql-ws": "^5.13.1",
     "next-i18next": "^13.2.2",

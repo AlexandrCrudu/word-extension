@@ -1,7 +1,7 @@
-import { gql } from "@apollo/client";
+// import { gql } from "@apollo/client";
 
-export const GET_FIELDS = gql`
-  query GetFields($typeName: String!) {
+export const GET_FIELDS = `
+  query GetFields($typeName: String! = "quote") {
     __type(name: $typeName) {
       fields {
         key: name

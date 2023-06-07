@@ -1,16 +1,14 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import { DefaultButton } from "@fluentui/react";
+import React, { useEffect, useMemo, useState } from "react";
 import Progress from "./Progress";
 import TemplateTreeView from "./TemplateTreeView";
 import { Typography } from "@mui/material";
-import {quoteVariables} from "./test";
+import { quoteVariables } from "./test";
 import { useGetVariables } from "../hooks/useGetVariables";
 import type { Node } from "../components/TemplateTreeView";
+import { useAuth, useClerk } from "@clerk/clerk-react";
 
 /* global Word, require */
-
-
 
 export interface AppProps {
   title: string;
@@ -18,27 +16,32 @@ export interface AppProps {
 }
 
 const App: React.FC<AppProps> = (props) => {
-
+  
+  //todo: let users choose a category
   const category = {
     id: 3,
     name: "quote",
   }
+  
   const { getVariables } = useGetVariables(category);
+  const { userId } = useAuth();
   const [availableVariables, setAvailableVariables] = useState<Node[]>([]);
 
   const { title, isOfficeInitialized } = props;
-  useEffect(() => {(async () => {
-    try {
-      const availableVariables = await getVariables();
-      if (!availableVariables) {
-        throw new Error(`Failed to retrieve available variables for type ${category.name}`);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const availableVariables = await getVariables();
+        if (!availableVariables) {
+          throw new Error(`Failed to retrieve available variables for type ${category.name}`);
+        }
+        setAvailableVariables(availableVariables);
+      } catch (error) {
+        
       }
-      console.log(JSON.stringify(availableVariables))
-      setAvailableVariables(availableVariables);
-    } catch (error) {
-      console.error(error);
-    }
-  })()}, [])
+    })()
+  }, [])
 
   if (!isOfficeInitialized) {
     return (
@@ -56,14 +59,14 @@ const App: React.FC<AppProps> = (props) => {
         sx={{ minWidth: 250 }}
         onItemClick={(variable) => {
           return Word.run(async (context) => {
-            const paragraph = context.document.body.insertParagraph(
+            context.document.body.insertParagraph(
               variable,
               Word.InsertLocation.end
             );
             await context.sync();
           });
         }}
-        nodes={quoteVariables}
+        nodes={availableVariables}
         format="docx"
       />
     </div>

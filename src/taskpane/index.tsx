@@ -2,8 +2,8 @@ import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { ThemeProvider } from "@fluentui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { ClerkProvider } from "@clerk/clerk-react";
-import AuthorizedApolloProvider from "./components/AuthorizedApolloProvider";
+import { ClerkProvider, SignedIn, SignIn, SignedOut } from "@clerk/clerk-react";
+// import "dotenv/config";
 
 /* global document, Office, module */
 
@@ -19,23 +19,21 @@ const render = (Component) => {
   ReactDOM.render(
     <React.Suspense fallback={<div>Loading...</div>}>
       <ThemeProvider>
-        <ClerkProvider
-          polling
-          frontendApi=""
-          appearance={{
-            layout: {
-              socialButtonsVariant: "iconButton",
-              helpPageUrl: "https://opusflow.io",
-              privacyPageUrl: "https://opusflow.io",
-              termsPageUrl: "https://opusflow.io",
-              socialButtonsPlacement: "top",
-              showOptionalFields: true,
-            },
-          }}
-        >
-          <AuthorizedApolloProvider>
+        {/* <ClerkProvider
+          publishableKey={
+            // eslint-disable-next-line no-undef
+            process.env.CLERK_DEV_PUB_KEY
+          }
+        > */}
+        <ClerkProvider publishableKey="pk_test_Y2xlcmsuc291Z2h0LmFpcmVkYWxlLTM4LmxjbC5kZXYk">
+          <SignedIn>
+            {/* <AuthorizedApolloProvider> */}
             <Component title={title} isOfficeInitialized={isOfficeInitialized} />
-          </AuthorizedApolloProvider>
+            {/* </AuthorizedApolloProvider> */}
+          </SignedIn>
+          <SignedOut>
+            <SignIn redirectUrl="/taskpane" />
+          </SignedOut>
         </ClerkProvider>
       </ThemeProvider>
     </React.Suspense>,
