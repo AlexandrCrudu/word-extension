@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useEffect, useMemo, useState } from "react";
 import { Typography } from "@mui/material";
+// import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 
 import Progress from "./Progress";
 import TemplateTreeView from "./TemplateTreeView";
@@ -10,6 +11,7 @@ import ThemeProvider from "./ThemeProvider";
 import { useGetCategories } from "../hooks/useGetCategories";
 import { CategoryType } from "../types/categories";
 import { CategoriesDropdown } from "./CategoriesDropdown";
+import { LoginMessage } from "./LoginMessage";
 
 export interface AppProps {
   title: string;
@@ -32,7 +34,6 @@ const App: React.FC<AppProps> = (props) => {
   useEffect(() => {
     (async () => {
       try {
-        console.log("aaa");
         const categories = await getCategories();
 
         if (!categories) {
@@ -49,7 +50,6 @@ const App: React.FC<AppProps> = (props) => {
   useEffect(() => {
     (async () => {
       try {
-        console.log("bbbb");
         const availableVariables = await getVariables();
 
         if (!availableVariables) {

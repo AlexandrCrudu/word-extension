@@ -33,7 +33,7 @@ const render = (Component) => {
             {/* </AuthorizedApolloProvider> */}
           </SignedIn>
           <SignedOut>
-            <SignIn redirectUrl="/taskpane" />
+            <SignIn afterSignInUrl="" redirectUrl="/successLogin.html" />
           </SignedOut>
         </ClerkProvider>
       </ThemeProvider>
