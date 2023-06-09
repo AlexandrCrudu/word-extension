@@ -1,13 +1,15 @@
 /* eslint-disable */
-import React from "react";
-import { DefaultButton } from "@fluentui/react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Typography } from "@mui/material";
+
 import Progress from "./Progress";
 import TemplateTreeView from "./TemplateTreeView";
-import { Typography } from "@mui/material";
-import { quoteVariables } from "./test";
+import { useGetVariables } from "../hooks/useGetVariables";
+import type { Node } from "../components/TemplateTreeView";
 import ThemeProvider from "./ThemeProvider";
-
-/* global Word, require */
+import { useGetCategories } from "../hooks/useGetCategories";
+import { CategoryType } from "../types/categories";
+import { CategoriesDropdown } from "./CategoriesDropdown";
 
 export interface AppProps {
   title: string;
@@ -15,31 +17,51 @@ export interface AppProps {
 }
 
 const App: React.FC<AppProps> = (props) => {
-  const dbfields = [
-    "CreatedAt",
-    "CreatedBy",
-    "Discount",
-    "Draft",
-    "Due Data",
-    "Name",
-    "Tax Rate",
-    "bla bla",
-    "more fields",
-  ];
-  const click = async () => {
-    return Word.run(async (context) => {
-      const paragraph = context.document.body.insertParagraph(
-        "You can also interact with the actual word page from the pane. How cool is that :) So yes, it is not very hard to implement this task, it is definitely doable. ",
-        Word.InsertLocation.end
-      );
-
-      paragraph.font.color = "blue";
-
-      await context.sync();
-    });
-  };
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [currentCategory, setCurrentCategory] = useState({ id: 3, name: "quote" });
+  const { getCategories } = useGetCategories();
+  const { getVariables } = useGetVariables(currentCategory);
+  const [availableVariables, setAvailableVariables] = useState<Node[]>([]);
 
   const { title, isOfficeInitialized } = props;
+
+  const updateCurrentCategory = (category: CategoryType) => {
+    setCurrentCategory(category);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log("aaa");
+        const categories = await getCategories();
+
+        if (!categories) {
+          throw new Error(`Failed to retrieve categories`);
+        }
+
+        setCategories(categories);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log("bbbb");
+        const availableVariables = await getVariables();
+
+        if (!availableVariables) {
+          throw new Error(`Failed to retrieve available variables for type ${currentCategory.name}`);
+        }
+
+        setAvailableVariables(availableVariables);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [currentCategory]);
 
   if (!isOfficeInitialized) {
     return (
@@ -54,10 +76,7 @@ const App: React.FC<AppProps> = (props) => {
   return (
     <ThemeProvider>
       <div className="wrapper">
-        {/* <h1 className="title">OPUSFLOW ROCKS</h1>
-      {dbfields.map((field) => {
-        return <li className="item">{field}</li>;
-      })} */}
+        <CategoriesDropdown category={currentCategory} categories={categories} setCategory={updateCurrentCategory} />
         <TemplateTreeView
           title={<Typography variant="body1" sx={{ mb: 1, color: "text.secondary" }}>{`Variables`}</Typography>}
           sx={{ minWidth: 250 }}
@@ -70,12 +89,9 @@ const App: React.FC<AppProps> = (props) => {
               await context.sync();
             });
           }}
-          nodes={quoteVariables}
+          nodes={availableVariables}
           format="docx"
         />
-        {/* <DefaultButton className="messageBtn" onClick={click}>
-          Click to read cool message from Alex
-        </DefaultButton> */}
       </div>
     </ThemeProvider>
   );

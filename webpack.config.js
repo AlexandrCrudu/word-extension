@@ -61,6 +61,10 @@ module.exports = async (env, options) => {
       ],
     },
     plugins: [
+      new webpack.DefinePlugin({
+        "process.env.CLERK_DEV_PUB_KEY": JSON.stringify(process.env.CLERK_DEV_PUB_KEY),
+        "process.env.CLERK_PROD_PUB_KEY": JSON.stringify(process.env.CLERK_PROD_PUB_KEY),
+      }),
       new CopyWebpackPlugin({
         patterns: [
           {
