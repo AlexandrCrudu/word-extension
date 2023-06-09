@@ -1,7 +1,6 @@
 /* eslint-disable */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
-// import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 
 import Progress from "./Progress";
 import TemplateTreeView from "./TemplateTreeView";
@@ -11,21 +10,18 @@ import ThemeProvider from "./ThemeProvider";
 import { useGetCategories } from "../hooks/useGetCategories";
 import { CategoryType } from "../types/categories";
 import { CategoriesDropdown } from "./CategoriesDropdown";
-import { LoginMessage } from "./LoginMessage";
 
 export interface AppProps {
   title: string;
   isOfficeInitialized: boolean;
 }
 
-const App: React.FC<AppProps> = (props) => {
+const App: React.FC<AppProps> = ({ title, isOfficeInitialized }) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [currentCategory, setCurrentCategory] = useState({ id: 3, name: "quote" });
   const { getCategories } = useGetCategories();
   const { getVariables } = useGetVariables(currentCategory);
   const [availableVariables, setAvailableVariables] = useState<Node[]>([]);
-
-  const { title, isOfficeInitialized } = props;
 
   const updateCurrentCategory = (category: CategoryType) => {
     setCurrentCategory(category);
